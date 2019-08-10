@@ -30,7 +30,9 @@ function service(htmlMethod, url, data) {
 
     var elements = {
         table: $('#anuncios-lista'),
+        panelList: $('#panel-list'),
         panelEdit: $('#panel-editing'),
+        panelTitle: $('#title-panel-editing'),
         formEdit: $('#form-anuncio'),
         editID: $('#hdnAnuncioID'),
         editMarca: $('#txtMarca'),
@@ -80,11 +82,15 @@ function service(htmlMethod, url, data) {
 
     //eventos
     elements.btnNovo.click(function () {
-        elements.panelEdit.fadeIn();
+        elements.panelList.fadeOut(300, function() {
+            elements.panelTitle.html('Criando novo anúncio');
+            elements.panelEdit.fadeIn();
+        });
     });
 
     elements.btnCancel.click(function () {
         elements.panelEdit.fadeOut(300, function() {
+            elements.panelList.fadeIn();
             elements.reset();
         });
     });
@@ -111,8 +117,9 @@ function service(htmlMethod, url, data) {
             if(response && response.dados) {
                 elements.panelEdit.fadeOut(300, function(){
                     elements.reset();
+                    obterAnuncios();
+                    elements.panelList.fadeIn();
                 });
-                obterAnuncios();
             }
         })
     });
@@ -131,7 +138,10 @@ function service(htmlMethod, url, data) {
                 elements.editQuilometragem.val(response.dados.quilometragem);
                 elements.editObservacao.val(response.dados.observacao);
 
-                elements.panelEdit.fadeIn();
+                elements.panelList.fadeOut(300, function() {
+                    elements.panelTitle.html('Editando anúncio');
+                    elements.panelEdit.fadeIn();
+                });
             }
         });
     }
